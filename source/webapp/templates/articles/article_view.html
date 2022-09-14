@@ -1,4 +1,6 @@
+
 {% extends "base.html" %}
+{% load static %}
 {% block nav %}
     {% if request.user.is_authenticated %}
         <li class="nav-item">
@@ -28,6 +30,8 @@
             <p class="card-text">{{ article.content }}</p>
         </div>
     </div>
+    <button id="button" data-articles-link="{% url "webapp:article_view" article.pk %}">Like</button>
+
     <h3 class="my-3 text-center">Комментарии</h3>
     <div class="row">
         {% for comment in comments %}
@@ -75,4 +79,6 @@
             </div>
         </div>
     </div>
+    <script src="{% static "js/index.js" %}"></script>
 {% endblock %}
+

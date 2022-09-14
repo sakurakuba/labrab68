@@ -1,11 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.models import Permission
 from django.db.models import Q
+from django.http import JsonResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 
 # Create your views here.
 from django.utils.http import urlencode
+from django.views import View
 
 from webapp.forms import ArticleForm, SearchForm, ArticleDeleteForm, UserArticleForm
 from webapp.models import Article
@@ -105,3 +107,12 @@ class DeleteArticle(PermissionRequiredMixin, DeleteView):
             return self.delete(request, *args, **kwargs)
         else:
             return self.get(request, *args, **kwargs)
+
+
+class LikeView(View):
+    def get(self, request, *args, **kwargs):
+
+        return JsonResponse()
+
+
+
