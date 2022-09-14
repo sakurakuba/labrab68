@@ -22,6 +22,9 @@ class Article(BaseModel):
     author = models.ForeignKey(get_user_model(), related_name="articles", verbose_name="Автор", default=1,
                                on_delete=models.SET_DEFAULT)
 
+    likes = models.ManyToManyField(get_user_model(), related_name="article_likes", blank=True)
+
+
     def __str__(self):
         return f"{self.id}. {self.title}: {self.author.username}"
 
