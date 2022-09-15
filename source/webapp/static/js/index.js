@@ -1,18 +1,22 @@
-async function sendLike(event) {
+async function sendLike(event){
     event.preventDefault();
     let target = event.target;
     let url = target.href;
     let response = await fetch(url);
-    let response_json = await response.json()
-    let count = response_json.count
-    console.log(count)
+    let response_json = await response.json();
+    let count = response_json.count;
+    console.log(count);
+    let articleId = target.dataset.articleId;
+    let span = document.getElementById(articleId);
+    span.innerText = `${count} Likes`;
 
-    if (target.innerText === "Dislike") {
+    if (target.innerText === "Dislike"){
         target.innerText = "Like";
-    } else {
+    } else{
         target.innerText = "Dislike";
     }
 }
+
 
 
 function onLoadFunc(){
