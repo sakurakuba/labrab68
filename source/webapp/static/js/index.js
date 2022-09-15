@@ -1,16 +1,26 @@
-async function buttonClick(event) {
-    let target = event.target
-    let url = target.dataset.articlesLink;
-    console.log(url)
+async function sendLike(event) {
+    event.preventDefault();
+    let target = event.target;
+    let url = target.href;
     let response = await fetch(url);
-    let articles_json = await response.json()
-    console.log(articles_json)
-    console.log(articles_json.test)
+    let response_json = await response.json()
+    let count = response_json.count
+    console.log(count)
+
+    if (target.innerText === "Dislike") {
+        target.innerText = "Like";
+    } else {
+        target.innerText = "Dislike";
+    }
 }
 
-function getArticles(){
-    let button = document.getElementById("button");
-    button.addEventListener("click", buttonClick);
+
+function onLoadFunc(){
+    let likes = document.getElementsByClassName("likes");
+
+    for (let i=0;i<likes.length;i++) {
+        likes[i].addEventListener("click", sendLike)
+    }
 }
 
-window.addEventListener("load", getArticles);
+window.addEventListener("load", onLoadFunc);

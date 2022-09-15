@@ -32,7 +32,7 @@ class IndexView(ListView):
     def get_queryset(self):
         if self.search_value:
             return Article.objects.filter(
-                Q(author__icontains=self.search_value) |
+                Q(author__username__icontains=self.search_value) |
                 Q(title__icontains=self.search_value)).order_by("-updated_at")
         return Article.objects.all().order_by("-updated_at")
 
@@ -109,10 +109,22 @@ class DeleteArticle(PermissionRequiredMixin, DeleteView):
             return self.get(request, *args, **kwargs)
 
 
-class LikeView(View):
-    def get(self, request, *args, **kwargs):
+class LikesView(LoginRequiredMixin, View):
+    def get(self, request, *args, pk, **kwargs):
+        article = Article.objects.get(pk=pk)
+        user = self.request.user
+        if user in article.likes.all():
+            article.likes.remove(user)
+        else:
+            article.likes.add(user)
 
-        return JsonResponse()
+        return JsonResponse({"count": article.likes.count()})
+
+
+
+
+
+
 
 
 
