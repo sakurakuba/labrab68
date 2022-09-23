@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from webapp.models import Article
 
@@ -26,4 +27,16 @@ class ArticleSerializer(serializers.Serializer):
             setattr(instance, field, val)
         instance.save()
         return instance
+
+
+class ArticleModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        fields = "__all__"
+        read_only_fields = ("id", "author", "created_at", "updated_at")
+
+    def validate_title(self, value):
+        if len(value) < 3:
+            raise ValidationError("Length too short")
+        return value
 
