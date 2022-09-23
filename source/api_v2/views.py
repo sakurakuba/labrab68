@@ -20,12 +20,17 @@ class ArticleView(APIView):  # could be used (View)
     serializer_class = ArticleModelSerializer  # if using serializers.ModelSerializer
 
     def get(self, request, *args, **kwargs):
-        articles = Article.objects.all()
-        # print(articles)
-        # print(self.serializer_class(articles, many=True).data)  # if sending list objects need add many=True
-        articles_data = self.serializer_class(articles, many=True).data
-        # return JsonResponse(articles_data, safe=False) # without Response lib
-        return Response(articles_data)  # with Responses lib
+        if self.kwargs.get('pk'):
+            article = Article.objects.get(id=self.kwargs.get('pk'))
+            article_data = self.serializer_class(article).data
+            return Response(article_data)
+        else:
+            articles = Article.objects.all()
+            # print(articles)
+            # print(self.serializer_class(articles, many=True).data)  # if sending list objects need add many=True
+            articles_data = self.serializer_class(articles, many=True).data
+            # return JsonResponse(articles_data, safe=False) # without Response lib
+            return Response(articles_data)  # with Responses lib
 
     # this is if we working without Response, using request.body
     # def post(self, request, *args, **kwargs):
@@ -73,5 +78,9 @@ class ArticleView(APIView):  # could be used (View)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=200)
+
+    def delete(self, request, *args, pk, **kwargs):
+        Article.objects.get(id=pk).delete()
+        return Response(pk)
 
 
