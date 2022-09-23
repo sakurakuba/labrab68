@@ -18,15 +18,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 
-
-<<<<<<< HEAD
-=======
 api_urls = [
-    path('v1/', include('api_v1.urls'))
+    path('v1/', include('api_v1.urls')),
+    path('v2/', include('api_v2.urls'))
 ]
 
 
->>>>>>> les69
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("webapp.urls")),
